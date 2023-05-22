@@ -13,9 +13,8 @@ print(wlan.isconnected())
 
 # Configure MQTT
 mqtt_server = "192.168.1.86"
-client_id = 'bigles'
+client_id = 'michael'
 topic_pub = b'water'
-topic_msg = b'Movement Detected'
 
 # Configure GPIO pins
 flow_pin = machine.Pin(15, machine.Pin.IN)

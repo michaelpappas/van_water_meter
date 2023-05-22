@@ -2,20 +2,18 @@ import network
 import time
 from machine import Pin
 from umqtt.simple import MQTTClient
-import configparser
 
 wlan = network.WLAN(network.STA_IF)
 wlan.active(True)
-wlan.connect("ATT4EcFvWG","28wws2#v#ayp")
+wlan.connect(SSID,WIFIPassword)
 time.sleep(5)
 print(wlan.isconnected())
 
 sensor = Pin(16, Pin.IN)
 
 mqtt_server = "192.168.1.86"
-client_id = 'bigles'
+client_id = 'michael'
 topic_pub = b'water'
-topic_msg = b'Movement Detected'
 
 def mqtt_connect():
     client = MQTTClient(client_id, mqtt_server, keepalive=3600)
