@@ -1,13 +1,15 @@
 import machine
+from machine import Pin, I2C
 import utime
 import network
 import time
 from umqtt.simple import MQTTClient
+from ssd1306 import SSD1306_I2C
 
 # Configure network connection
 wlan = network.WLAN(network.STA_IF)
 wlan.active(True)
-wlan.connect(ssdi,password)
+wlan.connect(ssid, password)
 time.sleep(5)
 print(wlan.isconnected())
 
@@ -15,6 +17,10 @@ print(wlan.isconnected())
 mqtt_server = "192.168.1.86"
 client_id = 'michael'
 topic_pub = b'water/total'
+
+# oled setup
+i2c=I2C(0,sda=Pin(0), scl=Pin(1), freq=400000)
+oled = SSD1306_I2C(128, 64, i2c)
 
 # Set water_value for global use
 water_value = 0.0
@@ -90,6 +96,8 @@ while True:
     print("Total water flow: {:.2f} liters".format(water_value))
     flow_frequency = 0
     message = f"{water_value}".encode()
+    oled.text(f"{water_value} Liters", 0,10)
+    oled.write()
 
     # Delay for 5 second
     utime.sleep(5)
