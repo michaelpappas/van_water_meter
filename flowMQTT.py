@@ -9,7 +9,7 @@ from ssd1306 import SSD1306_I2C
 # Configure network connection
 wlan = network.WLAN(network.STA_IF)
 wlan.active(True)
-wlan.connect(ssid, password)
+wlan.connect(ssdi, password)
 time.sleep(5)
 print(wlan.isconnected())
 
@@ -96,8 +96,10 @@ while True:
     print("Total water flow: {:.2f} liters".format(water_value))
     flow_frequency = 0
     message = f"{water_value}".encode()
-    oled.text(f"{water_value} Liters", 0,10)
-    oled.write()
+    oled.fill(0)
+    oled.show()
+    oled.text("{:.2f} Liters".format(water_value), 0,10)
+    oled.show()
 
     # Delay for 5 second
     utime.sleep(5)
