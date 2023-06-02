@@ -1,3 +1,15 @@
+# flow meter wiring
+# power -> 3v3 GPIO5
+# ground -> ground GPIO3
+# signal -> GPIO15
+
+# oled wiring
+# power -> 3v3 GPIO5
+# ground -> ground GPIO3
+# sda -> GPIO0
+# scl -> GPIO1
+
+
 import machine
 from machine import Pin, I2C
 import utime
@@ -9,7 +21,7 @@ from ssd1306 import SSD1306_I2C
 # Configure network connection
 wlan = network.WLAN(network.STA_IF)
 wlan.active(True)
-wlan.connect(ssdi, password)
+wlan.connect("ssdi", "password")
 time.sleep(5)
 print(wlan.isconnected())
 
@@ -30,10 +42,10 @@ flow_pin = machine.Pin(15, machine.Pin.IN)
 
 # Configure water flow variables
 flow_frequency = 0
-liters_p_minute = 0.0
-total_liters = 0.0
+gallons_p_minute = 0.0
+total_gallons = 0.0
 start_time = utime.ticks_ms()
-FLOW_CALIB = 142.5
+FLOW_CALIB = 37.64
 
 # Define interrupt function to calculate flow frequency
 def handle_interrupt(pin):
@@ -53,6 +65,8 @@ def mqtt_connect():
 
 def reconnect():
     print('Failed to connect to the MQTT Broker. Reconnecting...')
+    oled.text("MQTT failure", 0,10)
+    oled.show()
     time.sleep(5)
     machine.reset()
 
@@ -87,18 +101,18 @@ while True:
     # Calculate total liters based on liters per minute and elapsed time
     current_time = utime.ticks_ms()
     elapsed_time = utime.ticks_diff(current_time, start_time) / 1000
-    total_liters += (liters_p_minute / 60) * elapsed_time
+    total_gallons += (gallons_p_minute / 60) * elapsed_time
 
-    water_value = water_value + total_liters
-    total_liters = 0
+    water_value = water_value + total_gallons
+    total_gallons = 0
 
     # Print water_value and reset flow frequency
-    print("Total water flow: {:.2f} liters".format(water_value))
+    print("Total water flow: {:.2f} gallons".format(water_value))
     flow_frequency = 0
     message = f"{water_value}".encode()
     oled.fill(0)
     oled.show()
-    oled.text("{:.2f} Liters".format(water_value), 0,10)
+    oled.text("{:.2f} Gallons".format(water_value), 0,10)
     oled.show()
 
     # Delay for 5 second
