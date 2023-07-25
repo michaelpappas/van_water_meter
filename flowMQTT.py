@@ -28,7 +28,7 @@ print(wlan.isconnected())
 # Configure MQTT
 mqtt_server = "192.168.1.86"
 client_id = 'michael'
-topic_pub = b'water/total'
+topic_pub = [b'water/update']
 
 # oled setup
 i2c=I2C(0,sda=Pin(0), scl=Pin(1), freq=400000)
@@ -61,6 +61,7 @@ def mqtt_connect():
     client = MQTTClient(client_id, mqtt_server, keepalive=3600)
     client.connect()
     print('Connected to %s MQTT Broker'%(mqtt_server))
+    client.publish("connect/water", '{"status": "connected}')
     return client
 
 def reconnect():
@@ -78,7 +79,7 @@ except OSError as e:
 
 def callback(topic, msg):
     global water_value
-    if topic == b"water/connect":
+    if topic == b"connect/water/response":
         print(msg.decode())
         water_value = float(msg.decode())
         print(f"Water value received from broker, {water_value}")
@@ -87,7 +88,7 @@ def callback(topic, msg):
         print("water value reset")
 
 client.set_callback(callback)
-client.subscribe("water/#")
+client.subscribe(['water/#', 'connect/#'])
 # utime.sleep(10)
 
 # Main loop to calculate and print total water flow
