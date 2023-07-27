@@ -13,7 +13,7 @@ from umqtt.simple import MQTTClient
 # Configure network connection
 wlan = network.WLAN(network.STA_IF)
 wlan.active(True)
-wlan.connect("ssdi", "password")
+wlan.connect("ATT4EcFvWG", "28wws2#v#ayp")
 time.sleep(5)
 print(wlan.isconnected())
 
@@ -31,6 +31,8 @@ flow_pin = machine.Pin(15, machine.Pin.IN)
 # Configure water flow variables
 flow_frequency = 0
 gallons_p_minute = 0.0
+liters_p_minute = 0.0
+total_liters = 0.0
 total_gallons = 0.0
 start_time = utime.ticks_ms()
 FLOW_CALIB = 37.64
@@ -78,29 +80,27 @@ except OSError as e:
 # utime.sleep(10)
 
 # Main loop to calculate and print total water flow
+
 while True:
-
-    # client.check_msg()
     # Calculate liters per minute based on flow frequency
-
     liters_p_minute = flow_frequency / FLOW_CALIB
 
     # Calculate total liters based on liters per minute and elapsed time
     current_time = utime.ticks_ms()
     elapsed_time = utime.ticks_diff(current_time, start_time) / 1000
-    total_gallons += (gallons_p_minute / 60) * elapsed_time
+    total_liters += (liters_p_minute / 60) * elapsed_time
+    total_gallons = total_liters * .2641
 
-    water_value = water_value + total_gallons
-    total_gallons = 0
-
-    # Print water_value and reset flow frequency
-    print("New Water Consumption: {:.2f} gallons".format(water_value))
+    # Print total liters and reset flow frequency
+    print("Total water flow: {:.2f} gallons".format(total_gallons))
+    if flow_frequency > 0:
+        print("new conspumption", total_gallons)
+        data = {"consumption": total_gallons}
+        msg = f'{data}'.encode()
+        client.publish(topic_pub, msg)
+        total_liters = 0
     flow_frequency = 0
-    message = f"{water_value}".encode()
 
-
-    # Delay for 5 second
+    # Delay for 10 second
     utime.sleep(10)
 
-    # Send total_liters to MQTT Broker
-    client.publish(topic_pub, message)
