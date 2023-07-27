@@ -3,13 +3,6 @@
 # ground -> ground GPIO3
 # signal -> GPIO15
 
-# oled wiring
-# power -> 3v3 GPIO5
-# ground -> ground GPIO3
-# sda -> GPIO0
-# scl -> GPIO1
-
-
 import machine
 from machine import Pin, I2C
 import utime

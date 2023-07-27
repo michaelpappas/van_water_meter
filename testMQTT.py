@@ -5,7 +5,7 @@ from umqtt.simple import MQTTClient
 
 wlan = network.WLAN(network.STA_IF)
 wlan.active(True)
-wlan.connect("ATT4EcFvWG","28wws2#v#ayp")
+wlan.connect("SSID","PASSWORD")
 time.sleep(5)
 print(wlan.isconnected())
 
