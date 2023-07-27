@@ -16,7 +16,6 @@ import utime
 import network
 import time
 from umqtt.simple import MQTTClient
-from ssd1306 import SSD1306_I2C
 
 # Configure network connection
 wlan = network.WLAN(network.STA_IF)
@@ -27,12 +26,8 @@ print(wlan.isconnected())
 
 # Configure MQTT
 mqtt_server = "192.168.1.86"
-client_id = 'michael'
-topic_pub = [b'water/update']
-
-# oled setup
-i2c=I2C(0,sda=Pin(0), scl=Pin(1), freq=400000)
-oled = SSD1306_I2C(128, 64, i2c)
+client_id = 'water_meter'
+topic_pub = b'water/update'
 
 # Set water_value for global use
 water_value = 0.0
@@ -61,13 +56,11 @@ def mqtt_connect():
     client = MQTTClient(client_id, mqtt_server, keepalive=3600)
     client.connect()
     print('Connected to %s MQTT Broker'%(mqtt_server))
-    client.publish("connect/water", '{"status": "connected}')
+    client.publish("connect/water", '{"client_id": "water_meter" , "status": "connected}')
     return client
 
 def reconnect():
     print('Failed to connect to the MQTT Broker. Reconnecting...')
-    oled.text("MQTT failure", 0,10)
-    oled.show()
     time.sleep(5)
     machine.reset()
 
@@ -77,24 +70,24 @@ except OSError as e:
     reconnect()
 
 
-def callback(topic, msg):
-    global water_value
-    if topic == b"connect/water/response":
-        print(msg.decode())
-        water_value = float(msg.decode())
-        print(f"Water value received from broker, {water_value}")
-    if topic == b"water/reset":
-        water_value = float(0)
-        print("water value reset")
+# def callback(topic, msg):
+#     global water_value
+#     if topic == b"connect/water/response":
+#         print(msg.decode())
+#         water_value = float(msg.decode())
+#         print(f"Water value received from broker, {water_value}")
+#     if topic == b"water/reset":
+#         water_value = float(0)
+#         print("water value reset")
 
-client.set_callback(callback)
-client.subscribe(['water/#', 'connect/#'])
+# client.set_callback(callback)
+# client.subscribe(['water/#', 'connect/#'])
 # utime.sleep(10)
 
 # Main loop to calculate and print total water flow
 while True:
 
-    client.check_msg()
+    # client.check_msg()
     # Calculate liters per minute based on flow frequency
 
     liters_p_minute = flow_frequency / FLOW_CALIB
@@ -108,16 +101,13 @@ while True:
     total_gallons = 0
 
     # Print water_value and reset flow frequency
-    print("Total water flow: {:.2f} gallons".format(water_value))
+    print("New Water Consumption: {:.2f} gallons".format(water_value))
     flow_frequency = 0
     message = f"{water_value}".encode()
-    oled.fill(0)
-    oled.show()
-    oled.text("{:.2f} Gallons".format(water_value), 0,10)
-    oled.show()
+
 
     # Delay for 5 second
-    utime.sleep(5)
+    utime.sleep(10)
 
     # Send total_liters to MQTT Broker
     client.publish(topic_pub, message)
