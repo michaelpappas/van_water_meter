@@ -8,6 +8,7 @@ from machine import Pin, I2C
 import utime
 import network
 import time
+import ujson
 from umqtt.simple import MQTTClient
 
 # Configure network connection
@@ -51,7 +52,7 @@ def mqtt_connect():
     client = MQTTClient(client_id, mqtt_server, keepalive=3600)
     client.connect()
     print('Connected to %s MQTT Broker'%(mqtt_server))
-    client.publish("connect/water", '{"client_id": "water_meter" , "status": "connected}')
+    client.publish("connect/water", '{"client_id": "water_meter" , "status": "connected"}')
     return client
 
 def reconnect():
@@ -96,7 +97,7 @@ while True:
     if flow_frequency > 0:
         print("new conspumption", total_gallons)
         data = {"consumption": total_gallons}
-        msg = f'{data}'.encode()
+        msg = ujson.dumps(data).encode()
         client.publish(topic_pub, msg)
         total_liters = 0
     flow_frequency = 0
