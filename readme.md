@@ -28,9 +28,11 @@ Flow meter ground -> pi GPIO3
 Flow meter VCC -> pi GPIO5
 Flow meter signal out -> pi GPIO15
 
-Top of Board: <img src="images/IMG_7607.jpg" alt="circuit-board" width="500"/>
+Top of board:  
+<img src="images/IMG_7607.jpg" alt="circuit-board" width="500"/>
 
-Top of Board: <img src="images/IMG_7608.jpg" alt="circuit-board-flowmeter" width="500"/>
+Board with flow meter:   
+<img src="images/IMG_7608.jpg" alt="circuit-board-flowmeter" width="500"/>
 
 ## Project Structure
 
