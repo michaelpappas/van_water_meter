@@ -24,9 +24,14 @@ replace the SSID and PASSWORD values with your own wifi SSID and Password.
 
 
 ## Wiring
-Flow meter ground -> pi GPIO3  
-Flow meter VCC -> pi GPIO5  
+Flow meter ground -> pi GPIO3
+Flow meter VCC -> pi GPIO5
 Flow meter signal out -> pi GPIO15
+
+Top of Board: ![circuit-board](images/IMG_7607.jpg)
+
+
+With flow meter attached: ![circuit-board-flowmeter](images/IMG_7608.jpg)
 
 ## Project Structure
 
