@@ -18,17 +18,20 @@ git clone https://github.com/michaelpappas/WATER_TANK_SENSOR
 cd WATER_TANK_SENSOR
 ```
 
-Replace the SSID and PASSWORD values with your own wifi network.  
+Replace the SSID and PASSWORD values with your own wifi network.
 Modify the "mqtt_server" value for the ip address of the MQTT broker.
 
 
 ## Wiring
-Flow meter ground -> pi GND (pin38)  
-Flow meter VCC -> pi 3v3 (pin36)  
-Flow meter signal out -> pi GPIO15 (pin20)  
+Flow meter ground -> pi GND (pin38)
+Flow meter VCC -> pi 3v3 (pin36)
+Flow meter signal out -> pi GPIO15 (pin20)
 
 Top of board:
-<img src="images/IMG_7607.jpg" alt="circuit-board" width="500"/>
+<img src="images/IMG_7607.jpg" alt="circuit-board-top" width="500"/>
+
+Bottom of board:
+<img src="images/IMG_7623.jpg" alt="circuit-board-bottom" width="500"/>
 
 Board with flow meter:
 <img src="images/IMG_7608.jpg" alt="circuit-board-flowmeter" width="500"/>
