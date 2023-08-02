@@ -20,7 +20,7 @@ git clone https://github.com/michaelpappas/WATER_TANK_SENSOR
 cd WATER_TANK_SENSOR
 ```
 
-Replace the SSID and PASSWORD values with your own wifi network.
+Replace the SSID and PASSWORD values with your own wifi network.  
 Modify the "mqtt_server" value for the ip address of the MQTT broker.
 
 
