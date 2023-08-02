@@ -8,8 +8,6 @@ An LM2596 dc-dc voltage converter is used to step the 12v house battery voltage 
 - [Manual Installation](#manual-installation)
 - [Dev Environment](#development-environment)
 - [Wiring](#wiring)
-- [Further Improvements](#further-improvements)
-
 
 ## Manual Installation
 
@@ -44,10 +42,7 @@ Board with flow meter:
 
 ```
 
-## Further Improvements
 
-1. Complete readme.md
-2. Configure script to run automatically when pi gets power
 
 
 
