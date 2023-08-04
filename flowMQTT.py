@@ -19,7 +19,7 @@ time.sleep(5)
 print("WLAN Conection Status: ", wlan.isconnected())
 
 # Configure MQTT
-mqtt_server = "192.168.1.86"
+mqtt_server = SERVER_IP
 client_id = 'water_meter'
 topic_pub = b'water/update'
 
@@ -32,8 +32,6 @@ flow_pin = machine.Pin(15, machine.Pin.IN)
 # Configure water flow variables
 flow_frequency = 0
 gallons_p_minute = 0.0
-liters_p_minute = 0.0
-total_liters = 0.0
 total_gallons = 0.0
 start_time = utime.ticks_ms()
 FLOW_CALIB = 37.64
